@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:new_model_project/location_details.dart';
 import 'package:new_model_project/model/client_model.dart';
+import 'package:new_model_project/model/location_model.dart';
 import 'package:new_model_project/service/client_service.dart';
 
 class NewClient extends StatefulWidget {
@@ -11,6 +13,8 @@ class NewClient extends StatefulWidget {
 }
 
 class _NewClientState extends State<NewClient> {
+
+  List<LocationModel> locations = [];
 
   TextEditingController nameController = TextEditingController();
   TextEditingController primaryNumberController = TextEditingController();
@@ -202,7 +206,23 @@ class _NewClientState extends State<NewClient> {
           TextFormField(
             decoration: InputDecoration(
                     hintText: 'Location',
-                   
+                   suffixIcon: InkWell(
+                     child: Icon(Icons.pin_drop,
+                     color: Colors.blue,),
+                    onTap: (){
+                       showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    AlertDialog(content: LocationDetails(
+                      onSaved: (locationModel) {
+                        setState(() {
+                          locations.add(locationModel);
+                        });
+                      },
+                    )),
+                       );
+                    },
+                   )
                   ),
                   controller: locationController,
           ),
@@ -219,6 +239,23 @@ class _NewClientState extends State<NewClient> {
                    
                   ),
                   controller: commentController,
+          ),
+          SizedBox(height: 20),
+          Container(alignment: Alignment.centerLeft, child: Text('Locations')),
+          Expanded(
+            flex: 1,
+            child: ListView.builder(
+              itemCount: locations.length,
+              itemBuilder: (context, index) {
+                LocationModel locModel = locations[index];
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: Colors.grey, width: 1))
+                  ),
+                  child: Text('${locModel.toString()}'),
+                );
+              },
+            )
           )
         ]),
     )
