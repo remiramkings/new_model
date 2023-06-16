@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:new_model_project/model/client_model.dart';
 import 'package:new_model_project/service/base_service.dart';
 
 class ClientService extends BaseService {
@@ -15,6 +16,21 @@ class ClientService extends BaseService {
     Uri uri = getApiUri('api/Saveclient');
     var headers = {'Content-Type': 'application/json'};
     Response response = await client.put(uri, headers: headers, body: jsonEncode(clientData));
-    return isSuccess(response);    
+    return isSuccess(response);
+  }
+
+  Future<ClientModel?> getClientData() async {
+    Uri uri = getApiUri('api/getclientdetailstoedit/19753/0');
+    var headers = {'Content-Type': 'application/json'};
+    Response response = await client.get(uri, headers: headers);
+    if(!isSuccess(response)){
+      return null;
+    }
+    Map<String, dynamic> map = getMap(response);
+    if(!map.containsKey('clients')){
+      return null;
+    }
+
+    return ClientModel.fromMap(map['clients'] as Map<String, dynamic>);
   }
 }

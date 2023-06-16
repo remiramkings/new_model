@@ -35,7 +35,7 @@ class ClientModel{
     required this.comment
   });
 
-  factory ClientModel.create(
+  factory ClientModel.  create(
     String name,
     String primaryNumber,
     String secondaryNumber,
@@ -47,12 +47,13 @@ class ClientModel{
     String followUpDate,
     String location,
     String address,
-    String comment
+    String comment,
+    {String id = '0', String companyId = '114'}
   ) {
     return ClientModel(
-      id: '0',
+      id: id,
       clientTypeId: null,
-      companyId: '114',
+      companyId: companyId,
       name: name,
       primaryNumber: primaryNumber,
       secondaryNumber: secondaryNumber,
@@ -66,6 +67,28 @@ class ClientModel{
       address: address,
       comment: comment
     );
+  }
+
+  static T getKeyValue<T>(Map<String, dynamic> map, String key, T defaultVal){    
+    return (!map.containsKey(key)||map[key]==null)?defaultVal:(map[key] as T);
+  }
+
+  factory ClientModel.fromMap(Map<String, dynamic> map){
+    return ClientModel(id: getKeyValue<String>(map, 'client_id', ''),
+        clientTypeId: getKeyValue<String>(map, 'client_type_id', ''),
+        companyId: getKeyValue<String>(map, 'company_id', ''),
+        name: getKeyValue<String>(map, 'client_name', ''),
+        primaryNumber:  getKeyValue<String>(map, 'client_mobile_number', ''),
+        secondaryNumber: getKeyValue<String>(map, 'client_phone_number', ''), 
+        whatsAppNumber: getKeyValue<String>(map, 'whatsapp_number', ''),
+        dob: getKeyValue<String>(map, 'dob', ''),
+        pan: getKeyValue<String>(map, 'pan_number', ''),
+        gst: getKeyValue<String>(map, 'gst_number', ''),
+        email: getKeyValue<String>(map, 'client_email', ''),
+        followUpDate: getKeyValue<String>(map, 'lastfollow_up_date', ''),
+        location: getKeyValue<String>(map, 'Add_Location', ''),
+        address: getKeyValue<String>(map, 'office_address', ''),
+        comment: getKeyValue<String>(map, 'comments', ''));
   }
 
   static Map<String, dynamic> toMap(ClientModel clientModel){
@@ -88,7 +111,7 @@ class ClientModel{
       'office_address' : clientModel.address,
       'comments' : clientModel.comment,
       "name_title": null,
-      "client_name": "New Age",
+      "client_name": clientModel.name,
       "client_location": "",
       "location_lat": 0,
       "location_lng": 0,
