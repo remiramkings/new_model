@@ -11,12 +11,16 @@ class BaseService {
     return jsonDecode(utf8.decode(response.bodyBytes));
   }
 
+  List<dynamic> getList(Response response) {
+    return jsonDecode(utf8.decode(response.bodyBytes));
+  }
+
   bool isSuccess(Response response) {
     return response.statusCode >= 200 && response.statusCode < 300;
   }
 
-  Uri getApiUri(String endpoint, {Map<String, dynamic>? queryParams}) {
-    return Uri.https("test.abc.todomor.com","/$endpoint", queryParams);
+  Uri getApiUri(String url, String endpoint, {Map<String, dynamic>? queryParams}) {
+    return Uri.https(url,"/$endpoint", queryParams);
   }
 
 }

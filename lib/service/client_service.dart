@@ -13,14 +13,14 @@ class ClientService extends BaseService {
   }
 
   Future<bool> saveClient(Map<String, dynamic> clientData) async {
-    Uri uri = getApiUri('api/Saveclient');
+    Uri uri = getApiUri('test.abc.todomor.com','api/Saveclient');
     var headers = {'Content-Type': 'application/json'};
     Response response = await client.put(uri, headers: headers, body: jsonEncode(clientData));
     return isSuccess(response);
   }
 
   Future<ClientModel?> getClientData() async {
-    Uri uri = getApiUri('api/getclientdetailstoedit/19753/0');
+    Uri uri = getApiUri('test.abc.todomor.com','api/getclientdetailstoedit/19753/0');
     var headers = {'Content-Type': 'application/json'};
     Response response = await client.get(uri, headers: headers);
     if(!isSuccess(response)){
@@ -31,6 +31,6 @@ class ClientService extends BaseService {
       return null;
     }
 
-    return ClientModel.fromMap(map['clients'] as Map<String, dynamic>);
+     return ClientModel.fromMap(map['clients'] as Map<String, dynamic>);
   }
 }
