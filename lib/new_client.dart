@@ -44,15 +44,30 @@ Future loadClientDetails() async {
    panController.text = clientDetails!.pan;
    gstController.text = clientDetails!.gst;
    emailController.text = clientDetails!.email;
-   followUpDateController.text = clientDetails!.followUpDate;
+   followUpDateController.text = getDayDifference();
    locationController.text = clientDetails!.location;
    addressController.text = clientDetails!.address;
    commentController.text = clientDetails!.comment;
 
  });
 }
+
+String getDayDifference(){
+  DateTime now = DateTime.now();
+ DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(clientDetails!.followUpDate);
+  int result = tempDate.compareTo(now);
+ String date =  DateFormat('yMMMMEEEEd').format(now);
+   if(result <= 0){
+    return date;
+   }
+   return clientDetails!.followUpDate;
+ 
+ 
+}
+
   void initState() {
     loadClientDetails();
+   
   }
 
   @override
@@ -218,8 +233,8 @@ Future loadClientDetails() async {
                       DateTime? pickedDate = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime(2025));
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2100));
                       if (pickedDate == null) {
                         return;
                       }
